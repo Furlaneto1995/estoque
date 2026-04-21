@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estoque Mobile</title>
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#2563eb">
+</head>
+
+<body>
+
+<h1 class="titulo-conferencia">Conferência de estoques</h1>
+
+<button id="btnExpandir"
+        class="btn-expandir"
+        onclick="alternarModoVisualizacao()">
+  ⛶
+</button>
+
+<div class="nav-top">
+  <button onclick="mostrarTela('movimentar')" class="btn-main">
+    Movimentação
+  </button>
+
+  <button onclick="mostrarTela('estoque')" class="btn-main">
+    Estoque
+  </button>
+
+  <button onclick="mostrarTela('historico')" class="btn-main">
+    Histórico
+  </button>
+</div>
+
+<!-- MOVIMENTAR -->
+<div id="movimentar" class="card">
+  <select id="tipoSelect" onchange="filtrarPorTipo()">
+  <option value="">Selecionar tipo</option>
+  <option value="brf">BRF</option>
+  <option value="tampas">Tampas</option>
+  <option value="laminacao">1ª Laminação</option>
+</select>
+
+  <select id="itemSelect" onchange="selecionarManual()">
+    <option value="">Selecionar item</option>
+  </select>
+<select id="versaoSelect">
+  <option value="">Selecionar versão</option>
+</select>
+
+
+  
+
+  <div class="input-row">
+    <input id="buscaItem" placeholder="Busca manual" oninput="filtrar()">
+    <button class="btn-clear" onclick="limparBusca()">X</button>
+  </div>
+
+  <div id="sugestoes" class="suggestions hidden"></div>
+
+  <button class="last-item" onclick="usarUltimo()">Repetir último</button>
+
+  <input type="number" id="quantidade" placeholder="Peso">
+
+  <button class="btn-add" onclick="movimentar('add')">Entrada</button>
+<button class="btn-remove" onclick="movimentar('remove')">Saída</button>
+</div>
+
+<!-- ESTOQUE -->
+<div id="estoque" class="card hidden">
+<button id="btnExportarEstoque" class="btn-main" onclick="abrirModalExportar('estoque')" style="margin-bottom:10px;">
+  Exportar Estoque
+</button>
+
+ <div id="resumoEstoque" class="cards-container">
+
+  <div class="card-total geral">
+    <span>Total Geral</span>
+    <strong id="totalGeral">0 kg</strong>
+  </div>
+
+  <div class="card-total brf">
+    <span>BRF</span>
+    <strong id="totalBrf">0 kg</strong>
+    <div class="barra">
+      <div id="barraBrf" class="barra-preenchimento"></div>
+    </div>
+  </div>
+
+  <div class="card-total tampas">
+    <span>Tampas</span>
+    <strong id="totalTampas">0 kg</strong>
+    <div class="barra">
+      <div id="barraTampas" class="barra-preenchimento"></div>
+    </div>
+  </div>
+
+  <div class="card-total laminacao">
+    <span>1ª Lam.</span>
+    <strong id="totalLaminacao">0 kg</strong>
+    <div class="barra">
+      <div id="barraLaminacao" class="barra-preenchimento"></div>
+    </div>
+  </div>
+
+</div>
+
+  <input id="buscaEstoque" placeholder="Buscar" oninput="atualizarTabela()">
+
+
+<div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th onclick="ordenarEstoque('tipo')">Tipo</th>
+	  <th onclick="ordenarEstoque('item')">Item</th>
+	  <th onclick="ordenarEstoque('versao')">V.</th>
+	  <th onclick="ordenarEstoque('tamanho')">Medidas</th>
+	  <th onclick="ordenarEstoque('peso')">Kg</th>
+	  <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody id="tabela"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- HISTÓRICO -->
+<div id="historico" class="card hidden">
+<button id="btnExportarHistorico" class="btn-main" onclick="abrirModalExportar('historico')" style="margin-bottom:10px;">
+  Exportar Histórico
+</button>
+<div class="filtro-periodo">
+  <input type="date" id="dataInicio" placeholder="Data inicial" onchange="atualizarHistorico()">
+  <input type="date" id="dataFim" placeholder="Data final" onchange="atualizarHistorico()">
+  <button id="btnLimparFiltro" class="btn-limpar-filtro">Limpar</button>
+</div>
+  <input id="buscaHistorico" placeholder="Buscar" oninput="atualizarHistorico()">
+
+
+<div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th onclick="ordenarHistorico('data')">Data</th>
+<th onclick="ordenarHistorico('movimentacao')">Movimentação</th>
+<th onclick="ordenarHistorico('tipo')">Tipo</th>
+<th>Produto</th>
+<th onclick="ordenarHistorico('qtd')">Kg</th>
+<th>Ação</th>
+        </tr>
+      </thead>
+      <tbody id="historicoTabela"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Depois seu script principal -->
+<script src="script.js"></script>
+
+<!-- ================= MODAL EXPORTAR ================= -->
+<div id="modalExportar" class="modal-overlay hidden">
+  <div class="modal-content">
+    <h3>Opções de Exportação</h3>
+    
+    <label>
+      <input type="radio" name="tipoExportacao" value="tudo" checked onchange="togglePeriodo(false)">
+      Exportar Tudo
+    </label>
+    
+    
+    
+    <label>
+      <input type="radio" name="tipoExportacao" value="periodo" onchange="togglePeriodo(true)">
+      Exportar por Período
+    </label>
+    
+    <div id="areaPeriodo" class="hidden">
+      <br>
+      <label>Data Inicial:</label><br>
+      <input type="date" id="exportDataInicio">
+      
+      <label>Data Final:</label><br>
+      <input type="date" id="exportDataFim">
+    </div>
+    
+   
+    <button class="btn-modal btn-confirmar" onclick="executarExportacao()">
+  Confirmar
+</button>
+
+<button class="btn-modal btn-cancelar" onclick="fecharModalExportar()">
+  Cancelar
+</button>
+  </div>
+</div>
+
+</body>
+</html>

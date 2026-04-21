@@ -1,0 +1,605 @@
+/* ================= BASE ================= */
+
+body {
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  background: #eef2f7;
+  margin: 0;
+  padding: 6px 10px 10px 10px;
+
+  height: 100svh;
+  box-sizing: border-box;  /* 🔥 ESSENCIAL */
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+h1 {
+  text-align: center;
+  font-size: 20px;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+button {
+  padding: 10px;
+  margin: 4px 0;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+}
+
+select, input {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+/* ================= BOTÕES ================= */
+
+.btn-add { background: #16a34a; }
+.btn-remove { background: #dc2626; }
+.btn-main { background: #2563eb; }
+.btn-clear {
+  background: #dc2626;
+  color: white;
+  width: 45px;
+  flex-shrink: 0;
+  padding: 10px 0;
+}
+
+/* Botão lixeira da tabela */
+table .btn-remove {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  margin: auto;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ================= CARD PRINCIPAL ================= */
+
+.card {
+  background: white;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  margin-top: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  gap: 8px;
+}
+
+.hidden { display: none !important; }
+
+/* ================= TABELA ================= */
+
+.table-container {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 6px 4px;
+  text-align: center;
+}
+
+/* ================= TOAST ================= */
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+/* ================= CARDS RESUMO ================= */
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.card-total {
+  background: white;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-total span {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.card-total strong {
+  font-size: 18px;
+  margin-top: 4px;
+}
+
+/* ================= BARRAS ================= */
+
+.barra {
+  width: 100%;
+  height: 20px;
+  background: #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.barra-preenchimento {
+  height: 100%;
+  width: 0%;
+  border-radius: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;  /* 🔥 começa da esquerda */
+
+  padding-left: 6px;            /* 🔥 empurra texto pra dentro */
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+
+   transition: width 0.4s ease;
+}
+
+.card-total.brf .barra-preenchimento { background: #2563eb; }
+.card-total.tampas .barra-preenchimento { background: #16a34a; }
+.card-total.laminacao .barra-preenchimento { background: #ea580c; }
+
+/* ================= BUSCA ================= */
+
+input[placeholder="Buscar"],
+#buscaItem,
+#buscaHistorico {
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  margin: 6px 0;
+  padding: 8px 12px;
+}
+
+/* ================= FILTRO PERÍODO ================= */
+
+.filtro-periodo {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.filtro-periodo input {
+  width: 140px;
+  padding: 6px 4px;
+  height: 36px;
+  font-size: 13px;
+}
+
+.btn-limpar-filtro {
+  width: auto;
+  height: 36px;
+  padding: 0 12px;
+  background: #64748b;
+  color: white;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+/* ================= MODAL ================= */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  min-width: 300px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.btn-modal {
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 12px 20px;
+  min-width: 140px;
+  text-align: center;
+}
+
+.modal-content label {
+  display: flex;
+  align-items: center;   /* 🔥 alinha verticalmente */
+  gap: 8px;
+  cursor: pointer;
+}
+
+.modal-content input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;   /* remove margem padrão do navegador */
+}
+
+.modal-content label {
+  margin-bottom: 12px;
+}
+
+.btn-confirmar { background: #16a34a; color: white; }
+.btn-cancelar { background: #64748b; color: white; }
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+  .card {
+    padding: 8px;
+    margin-top: 6px;
+  }
+
+  .cards-container {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+  .btn-main {
+    padding: 8px;
+  }
+
+  .card-total {
+  padding: 4px 6px;
+}
+
+.card-total span {
+  font-size: 11px;
+  margin: 0;
+}
+
+.card-total strong {
+  font-size: 13px;
+  margin: 0;
+}
+
+.barra {
+  height: 6px;
+  margin-top: 3px;
+}
+
+.barra-preenchimento {
+  font-size: 8px;
+  padding-left: 4px;
+}
+
+  #buscaEstoque,
+  #buscaHistorico {
+    margin: 4px 0;
+    padding: 8px;
+  }
+
+}
+
+/* Linha do buscar manual */
+.input-row {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+/* Campo de busca ocupa tudo */
+#buscaItem {
+  flex: 1;
+}
+
+/* Botão limpar pequeno ao lado */
+.btn-clear {
+  width: 45px;
+  padding: 0;
+}
+
+.input-row .btn-clear {
+  width: 45px !important;
+}
+
+.input-row input,
+.input-row .btn-clear {
+  height: 40px;
+}
+
+.last-item {
+  background: #facc15 !important;
+  color: #000 !important;
+  font-weight: 600;
+}
+
+#movimentar {
+  overflow: hidden;
+}
+
+#movimentar,
+#estoque,
+#historico {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;   /* 🔥 ESSENCIAL para flex funcionar */
+}
+
+.card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;   /* 🔥 ESSENCIAL */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  table-layout: fixed;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 6px 4px;
+  text-align: center;
+}
+
+th:last-child,
+td:last-child {
+  width: 38px;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ===== Navegação estilo abas minimalista ===== */
+
+.nav-top {
+  display: flex;
+  border-bottom: 2px solid #e5e7eb;
+  margin-bottom: 6px;
+}
+
+.nav-top button {
+  flex: 1;
+  background: transparent;
+  color: #64748b;
+  border: none;
+  border-radius: 0;
+  padding: 10px 0;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+/* Hover suave */
+.nav-top button:hover {
+  color: #2563eb;
+}
+
+/* Aba ativa */
+.nav-top button.ativo {
+  background: transparent;        /* 🔥 garante que não fique branco */
+  color: #2563eb;                 /* muda só a cor do texto */
+  border-bottom: 3px solid #2563eb;
+  font-weight: 600;
+}
+
+/* ===== Ajuste fino Estoque ===== */
+
+/* Tipo (BRF / Tampas / 1ª Lam.) */
+#estoque table th:nth-child(1),
+#estoque table td:nth-child(1) {
+  width: 7ch;
+}
+
+/* Item (máx ~9 caracteres) */
+#estoque table th:nth-child(2),
+#estoque table td:nth-child(2) {
+  width: 10ch;   /* 9 + 1 respiro */
+}
+
+/* V (até 3 números) */
+#estoque table th:nth-child(3),
+#estoque table td:nth-child(3) {
+  width: 3ch;
+}
+
+/* Medidas (máx ~12 caracteres) */
+#estoque table th:nth-child(4),
+#estoque table td:nth-child(4) {
+  width: 13ch;   /* 12 + 1 respiro */
+}
+
+/* Kg (até 3 números) */
+#estoque table th:nth-child(5),
+#estoque table td:nth-child(5) {
+  width: 4ch;
+}
+
+/* Ação */
+#estoque table td:nth-child(6),
+#estoque table th:nth-child(6) {
+  white-space: nowrap;
+}
+/* ===== Ajuste fino Histórico ===== */
+
+/* Data */
+#historico table th:nth-child(1),
+#historico table td:nth-child(1) {
+  width: 9ch;
+}
+
+/* Movimentação (Entrada / Saída) */
+#historico table th:nth-child(2),
+#historico table td:nth-child(2) {
+  width: 12ch;   /* aumenta espaço */
+}
+
+/* Tipo (BRF / Tampas / 1ª Lam.) */
+#historico table th:nth-child(3),
+#historico table td:nth-child(3) {
+  width: 6ch;   /* reduz */
+}
+
+/* Produto */
+#historico table th:nth-child(4),
+#historico table td:nth-child(4) {
+  width: 11ch;
+}
+
+/* Kg */
+#historico table th:nth-child(5),
+#historico table td:nth-child(5) {
+  width: 4ch;
+}
+
+/* Ação */
+#historico table th:nth-child(6),
+#historico table td:nth-child(6) {
+  width: 4ch;   /* aumenta um pouco */
+  white-space: nowrap;
+}
+
+/* ===== Modo Visualização ===== */
+
+body.modo-visualizacao .titulo-conferencia,
+body.modo-visualizacao .nav-top,
+body.modo-visualizacao .cards-container,
+body.modo-visualizacao #btnExportarEstoque,
+body.modo-visualizacao #btnExportarHistorico,
+body.modo-visualizacao .filtro-periodo {
+  display: none !important;
+}
+
+/* manter busca visível */
+body.modo-visualizacao #buscaEstoque,
+body.modo-visualizacao #buscaHistorico {
+  display: block;
+}
+
+/* reduzir largura do campo buscar */
+body.modo-visualizacao #buscaEstoque,
+body.modo-visualizacao #buscaHistorico {
+  width: calc(100% - 50px);
+}
+
+/* remover padding do card */
+body.modo-visualizacao .card {
+  padding: 5px;
+  margin: 0;
+}
+
+/* tabela ocupa restante */
+body.modo-visualizacao .table-container {
+  height: calc(100dvh - 60px);
+}
+
+.btn-expandir {
+  position: fixed;
+  right: 30px;
+
+  top: 0px;  /* 🔥 valor base, vamos ajustar fino */
+
+  width: 32px;
+  height: 32px;
+  font-size: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #64748b;
+  z-index: 9999;
+}
+
+body.modo-visualizacao .btn-expandir {
+top: calc( var(--altura-topo, 60px) );
+  color: #dc2626;
+}
+
+/* Botão só aparece em Estoque e Histórico */
+
+#movimentar ~ #btnExpandir {
+  display: none;
+}
+
+body.modo-visualizacao .btn-expandir {
+  top: calc( var(--altura-topo, 0px) );
+}
+
+body.modo-visualizacao #estoque th:last-child,
+body.modo-visualizacao #estoque td:last-child,
+body.modo-visualizacao #historico th:last-child,
+body.modo-visualizacao #historico td:last-child {
+  display: none !important;
+}
+
+/* ===== Ajuste limpo Movimentação ===== */
+
+#movimentar {
+  overflow: hidden;
+}
+
+#movimentar .card {
+  gap: 3px;
+  padding: 8px;
+}
+
+#movimentar select,
+#movimentar input {
+  margin: 2px 0;
+}
+
+#movimentar .input-row {
+  margin: 0;
+}
