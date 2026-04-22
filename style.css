@@ -44,7 +44,7 @@ select, input {
 
 .btn-add { background: #16a34a; }
 .btn-remove { background: #dc2626; }
-.btn-main { background: #2563eb; }
+.btn-main { background: #1e3a8a; }
 .btn-clear {
   background: #dc2626;
   color: white;
@@ -99,10 +99,11 @@ table {
 thead th {
   position: sticky;
   top: 0;
-  background: #2563eb;
+  background: #1e3a8a;
   color: white;
   cursor: pointer;
 }
+
 
 th, td {
   border: 1px solid #ccc;
@@ -181,7 +182,7 @@ th, td {
    transition: width 0.4s ease;
 }
 
-.card-total.brf .barra-preenchimento { background: #2563eb; }
+.card-total.brf .barra-preenchimento { background: #60a5fa; }
 .card-total.tampas .barra-preenchimento { background: #16a34a; }
 .card-total.laminacao .barra-preenchimento { background: #ea580c; }
 
@@ -280,6 +281,15 @@ input[placeholder="Buscar"],
 /* ================= MOBILE ================= */
 
 @media (max-width: 768px) {
+
+  #historico table {
+    font-size: 11px;
+  }
+
+  #historico th,
+  #historico td {
+    padding: 5px 3px;
+  }
 
   .card {
     padding: 8px;
@@ -396,7 +406,7 @@ th, td {
 
 th:last-child,
 td:last-child {
-  width: 38px;
+  width: 30px;
 }
 
 html, body {
@@ -425,100 +435,70 @@ html, body {
 
 /* Hover suave */
 .nav-top button:hover {
-  color: #2563eb;
+  color: #1e3a8a;
 }
 
 /* Aba ativa */
 .nav-top button.ativo {
   background: transparent;        /* 🔥 garante que não fique branco */
-  color: #2563eb;                 /* muda só a cor do texto */
-  border-bottom: 3px solid #2563eb;
+  color: #1e3a8a;                 /* muda só a cor do texto */
+  border-bottom: 3px solid #1e3a8a;
   font-weight: 600;
 }
 
 /* ===== Ajuste fino Estoque ===== */
 
-/* Tipo (BRF / Tampas / 1ª Lam.) */
+/* Tipo */
 #estoque table th:nth-child(1),
 #estoque table td:nth-child(1) {
   width: 7ch;
 }
 
-/* Item (máx ~9 caracteres) */
+/* Item */
 #estoque table th:nth-child(2),
 #estoque table td:nth-child(2) {
-  width: 10ch;   /* 9 + 1 respiro */
+  width: 8ch;
 }
 
-/* V (até 3 números) */
+/* V. */
 #estoque table th:nth-child(3),
 #estoque table td:nth-child(3) {
-  width: 3ch;
-}
-
-/* Medidas (máx ~12 caracteres) */
-#estoque table th:nth-child(4),
-#estoque table td:nth-child(4) {
-  width: 13ch;   /* 12 + 1 respiro */
-}
-
-/* Kg (até 3 números) */
-#estoque table th:nth-child(5),
-#estoque table td:nth-child(5) {
   width: 4ch;
-}
-
-/* Ação */
-#estoque table td:nth-child(6),
-#estoque table th:nth-child(6) {
   white-space: nowrap;
 }
-/* ===== Ajuste fino Histórico ===== */
 
-/* Data */
-#historico table th:nth-child(1),
-#historico table td:nth-child(1) {
+/* Medidas */
+#estoque table th:nth-child(4),
+#estoque table td:nth-child(4) {
   width: 9ch;
-}
-
-/* Movimentação (Entrada / Saída) */
-#historico table th:nth-child(2),
-#historico table td:nth-child(2) {
-  width: 12ch;   /* aumenta espaço */
-}
-
-/* Tipo (BRF / Tampas / 1ª Lam.) */
-#historico table th:nth-child(3),
-#historico table td:nth-child(3) {
-  width: 6ch;   /* reduz */
-}
-
-/* Produto */
-#historico table th:nth-child(4),
-#historico table td:nth-child(4) {
-  width: 11ch;
+  white-space: nowrap;
 }
 
 /* Kg */
-#historico table th:nth-child(5),
-#historico table td:nth-child(5) {
-  width: 4ch;
-}
-
-/* Ação */
-#historico table th:nth-child(6),
-#historico table td:nth-child(6) {
-  width: 4ch;   /* aumenta um pouco */
+#estoque table th:nth-child(5),
+#estoque table td:nth-child(5) {
+  width: 5ch;
   white-space: nowrap;
 }
 
+/* QTD */
+#estoque table th:nth-child(6),
+#estoque table td:nth-child(6) {
+  width: 5ch;
+  white-space: nowrap;
+}
+
+/* Lixeira */
+#estoque table td:nth-child(7),
+#estoque table th:nth-child(7) {
+  width: 32px;
+  min-width: 32px;
+  max-width: 32px;
+}
 /* ===== Modo Visualização ===== */
 
-body.modo-visualizacao .titulo-conferencia,
 body.modo-visualizacao .nav-top,
 body.modo-visualizacao .cards-container,
-body.modo-visualizacao #btnExportarEstoque,
-body.modo-visualizacao #btnExportarHistorico,
 body.modo-visualizacao .filtro-periodo {
   display: none !important;
 }
@@ -546,35 +526,33 @@ body.modo-visualizacao .table-container {
   height: calc(100dvh - 60px);
 }
 
-.btn-expandir {
-  position: fixed;
-  right: 30px;
-
-  top: 0px;  /* 🔥 valor base, vamos ajustar fino */
-
-  width: 32px;
-  height: 32px;
-  font-size: 30px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: #64748b;
-  z-index: 9999;
+.header-buttons {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  gap: 10px;
 }
 
-body.modo-visualizacao .btn-expandir {
-top: calc( var(--altura-topo, 60px) );
+.btn-icon {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #64748b;
+  width: auto;
+  padding: 0;
+  line-height: 1;
+}
+
+body.modo-visualizacao #btnExpandir {
   color: #dc2626;
 }
 
-/* Botão só aparece em Estoque e Histórico */
-
-#movimentar ~ #btnExpandir {
-  display: none;
+.btn-icon {
+  line-height: 1;
 }
-
-body.modo-visualizacao .btn-expandir {
-  top: calc( var(--altura-topo, 0px) );
+body.modo-visualizacao .titulo-conferencia {
+  visibility: hidden;
 }
 
 body.modo-visualizacao #estoque th:last-child,
@@ -602,4 +580,467 @@ body.modo-visualizacao #historico td:last-child {
 
 #movimentar .input-row {
   margin: 0;
+}
+
+.top-header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.titulo-conferencia {
+  margin: 0;
+  text-align: center;
+}
+
+.header-buttons {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #64748b;
+  width: auto;
+}
+
+.btn-icon:hover {
+  color: #1e3a8a;
+}
+
+.top-header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-buttons {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #64748b;
+  padding: 0;
+  line-height: 1;
+  height: auto;
+}
+
+/* ================= SETAS DE ORDENAÇÃO ================= */
+
+thead th.sortable {
+  user-select: none;
+}
+
+thead th.sortable .sort-arrow {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 10px;
+  vertical-align: middle;
+  opacity: 0.9;
+}
+
+thead th.sortable.asc .sort-arrow::after  { content: "▲"; }
+thead th.sortable.desc .sort-arrow::after { content: "▼"; }
+thead th.sortable.none .sort-arrow::after { content: "";  }
+
+/* ================= CARD CLICÁVEL ================= */
+
+.card-total.clicavel {
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card-total.clicavel:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-total.clicavel:active {
+  transform: scale(0.97);
+}
+
+/* ================= TELA DETALHES ================= */
+
+.detalhes-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.detalhes-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #1e293b;
+  flex: 1;
+}
+
+.detalhes-header .detalhes-info {
+  text-align: right;
+}
+
+.detalhes-header .detalhes-info span {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e3a8a;
+  white-space: nowrap;
+}
+
+.detalhes-header .detalhes-info small {
+  display: block;
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.btn-voltar {
+  background: #64748b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  width: auto;
+}
+
+.btn-voltar:hover {
+  background: #475569;
+}
+
+/* ===== Ajuste colunas Detalhes ===== */
+
+#detalhesTipo table th:nth-child(1),
+#detalhesTipo table td:nth-child(1) {
+  width: 10ch;
+}
+
+#detalhesTipo table th:nth-child(2),
+#detalhesTipo table td:nth-child(2) {
+  width: 4ch;
+}
+
+#detalhesTipo table th:nth-child(3),
+#detalhesTipo table td:nth-child(3) {
+  width: 11ch;
+}
+
+#detalhesTipo table th:nth-child(4),
+#detalhesTipo table td:nth-child(4) {
+  width: 5ch;
+}
+
+#detalhesTipo table th:nth-child(5),
+#detalhesTipo table td:nth-child(5) {
+  width: 4ch;
+}
+
+#detalhesTipo table th:nth-child(6),
+#detalhesTipo table td:nth-child(6) {
+  width: 3ch;
+}
+
+/* Linhas de detalhe individual */
+.detalhe-registro td {
+  background: #f1f5f9;
+  font-size: 11px;
+  color: #475569;
+}
+
+.detalhe-legenda td {
+  background: #e2e8f0;
+  font-size: 10px;
+  font-weight: 700;
+  color: #334155;
+}
+
+
+
+.btn-expandir-detalhe {
+  background: #1e3a8a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
+
+.btn-expandir-detalhe:hover {
+  background: #1d4ed8;
+}
+
+/* ===== Detalhes no modo visualização ===== */
+
+#detalhesTipo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+body.modo-visualizacao .detalhes-header {
+  display: none !important;
+}seguir
+
+/* Item aberto: texto negrito azul */
+tr.grupo-aberto > td {
+  color: #1e3a8a !important;
+  font-weight: 700 !important;
+}
+
+/* garante que textos internos também fiquem iguais */
+tr.grupo-aberto > td strong,
+tr.grupo-aberto > td span {
+  color: #1e3a8a !important;
+  font-weight: 700 !important;
+}
+
+/* borda esquerda azul escuro */
+tr.grupo-aberto > td:first-child {
+  border-left: 3px solid #1e3a8a !important;
+}
+/* Legenda dos detalhes */
+.detalhe-legenda td {
+  font-size: 11px;
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+/* Registros individuais */
+.detalhe-registro td {
+  background: #f8fafc;
+  font-size: 11px;
+  color: #475569;
+}
+
+/* Borda esquerda azul CLARO nas linhas expandidas */
+.detalhe-legenda td:first-child,
+.detalhe-registro td:first-child {
+  border-left: 3px solid #93c5fd;
+}
+
+/* Item aberto: texto azul escuro e negrito */
+tr.grupo-aberto td {
+  background: #ffffff !important;
+  color: #1e3a8a !important;
+  font-weight: 700 !important;
+}
+
+/* garante que textos internos também fiquem azul escuro */
+tr.grupo-aberto td strong,
+tr.grupo-aberto td span {
+  color: #1e3a8a !important;
+  font-weight: 700 !important;
+}
+
+/* borda esquerda azul escuro */
+tr.grupo-aberto td:first-child {
+  border-left: 3px solid #1e3a8a !important;
+}
+
+/* botão aberto continua azul, igual ao + */
+tr.grupo-aberto .btn-expandir-detalhe,
+tr.grupo-aberto .btn-expandir-detalhe:hover {
+  background: #1e3a8a !important;
+  color: #ffffff !important;
+}
+
+.btn-importar {
+  background: #f59e0b;
+  color: white;
+}
+
+.btn-importar:hover {
+  background: #d97706;
+}
+
+/* ================= CORES HISTÓRICO ================= */
+
+.linha-entrada td {
+  background: #f0fdf4;
+}
+
+.linha-saida td {
+  background: #fef2f2;
+}
+
+/* ================= MODAL OPÇÕES LONG PRESS ================= */
+
+.modal-opcoes-content {
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+  min-width: 260px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-opcoes-content h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: #1e293b;
+  text-align: center;
+}
+
+.btn-opcao {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+}
+
+.btn-editar-opcao {
+  background: #eff6ff;
+  color: #1e40af;
+}
+
+.btn-consumir-opcao {
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.btn-excluir-opcao {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.btn-cancelar-opcao {
+  background: #f1f5f9;
+  color: #64748b;
+  text-align: center;
+}
+
+/* ================= BOBINA CONSUMIDA ================= */
+
+.bobina-consumida td {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.linha-consumida td {
+  background: #fefce8;
+}
+
+/* ================= MODAL SAÍDA ================= */
+
+.modal-saida-content {
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+  min-width: 300px;
+  max-width: 90vw;
+  max-height: 80vh;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-saida-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-saida-header h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #1e293b;
+}
+
+.saida-restante {
+  font-size: 14px;
+  font-weight: 700;
+  color: #dc2626;
+}
+
+.modal-saida-tabela {
+  overflow-y: auto;
+  max-height: 50vh;
+}
+
+.modal-saida-tabela table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.modal-saida-tabela th,
+.modal-saida-tabela td {
+  border: 1px solid #ccc;
+  padding: 8px 4px;
+  text-align: center;
+}
+
+.modal-saida-tabela thead th {
+  background: #2563eb;
+  color: white;
+  position: sticky;
+  top: 0;
+}
+
+.bobina-selecionada td {
+  background: #fef2f2 !important;
+}
+
+.bobina-descontada td {
+  background: #f0fdf4 !important;
+}
+
+.modal-saida-botoes {
+  display: flex;
+  gap: 8px;
+}
+
+.modal-saida-botoes button {
+  flex: 1;
+}
+
+.linha-consumo-parcial td {
+  background: #fff7ed;
+}
+
+/* Bloqueia seleção de texto em tudo */
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Permite seleção só nos campos de input */
+input, select, textarea {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
 }

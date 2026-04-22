@@ -7,18 +7,32 @@
   <link rel="stylesheet" href="style.css">
 
   <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#2563eb">
+  <meta name="theme-color" content="#1e3a8a">
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 
 <body>
 
-<h1 class="titulo-conferencia">Conferência de estoques</h1>
+<div class="top-header">
 
-<button id="btnExpandir"
-        class="btn-expandir"
-        onclick="alternarModoVisualizacao()">
-  ⛶
+  <h1 class="titulo-conferencia">Conferência de estoques</h1>
+
+  <div class="header-buttons">
+    <button id="btnExportarGlobal"
+        class="btn-icon"
+        onclick="abrirModalExportar()">
+  📥
 </button>
+
+    <button id="btnExpandir"
+            class="btn-icon"
+            onclick="alternarModoVisualizacao()">
+      ⛶
+    </button>
+  </div>
+
+</div>
 
 <div class="nav-top">
   <button onclick="mostrarTela('movimentar')" class="btn-main">
@@ -70,9 +84,6 @@
 
 <!-- ESTOQUE -->
 <div id="estoque" class="card hidden">
-<button id="btnExportarEstoque" class="btn-main" onclick="abrirModalExportar('estoque')" style="margin-bottom:10px;">
-  Exportar Estoque
-</button>
 
  <div id="resumoEstoque" class="cards-container">
 
@@ -81,7 +92,7 @@
     <strong id="totalGeral">0 kg</strong>
   </div>
 
-  <div class="card-total brf">
+  <div class="card-total brf clicavel" onclick="abrirDetalhes('brf')">
     <span>BRF</span>
     <strong id="totalBrf">0 kg</strong>
     <div class="barra">
@@ -89,7 +100,7 @@
     </div>
   </div>
 
-  <div class="card-total tampas">
+  <div class="card-total tampas clicavel" onclick="abrirDetalhes('tampas')">
     <span>Tampas</span>
     <strong id="totalTampas">0 kg</strong>
     <div class="barra">
@@ -97,8 +108,8 @@
     </div>
   </div>
 
-  <div class="card-total laminacao">
-    <span>1ª Lam.</span>
+  <div class="card-total laminacao clicavel" onclick="abrirDetalhes('laminacao')">
+  <span>1ª Laminação</span>
     <strong id="totalLaminacao">0 kg</strong>
     <div class="barra">
       <div id="barraLaminacao" class="barra-preenchimento"></div>
@@ -107,21 +118,37 @@
 
 </div>
 
+  <div class="input-row">
   <input id="buscaEstoque" placeholder="Buscar" oninput="atualizarTabela()">
+  <button class="btn-clear" id="btnLimparEstoque" onclick="document.getElementById('buscaEstoque').value=''; atualizarTabela();">X</button>
+</div>
 
 
 <div class="table-container">
     <table>
       <thead>
-        <tr>
-          <th onclick="ordenarEstoque('tipo')">Tipo</th>
-	  <th onclick="ordenarEstoque('item')">Item</th>
-	  <th onclick="ordenarEstoque('versao')">V.</th>
-	  <th onclick="ordenarEstoque('tamanho')">Medidas</th>
-	  <th onclick="ordenarEstoque('peso')">Kg</th>
-	  <th>Ação</th>
-        </tr>
-      </thead>
+  <tr>
+    <th class="sortable none" onclick="ordenarEstoque('tipo')">
+      Tipo<span class="sort-arrow"></span>
+    </th>
+    <th class="sortable none" onclick="ordenarEstoque('item')">
+      Item<span class="sort-arrow"></span>
+    </th>
+    <th class="sortable none" onclick="ordenarEstoque('versao')">
+      V.<span class="sort-arrow"></span>
+    </th>
+    <th class="sortable none" onclick="ordenarEstoque('tamanho')">
+      Medidas<span class="sort-arrow"></span>
+    </th>
+    <th class="sortable none" onclick="ordenarEstoque('peso')">
+      Kg<span class="sort-arrow"></span>
+    </th>
+    <th class="sortable none" onclick="ordenarEstoque('qtdEntradas')">
+      QTD<span class="sort-arrow"></span>
+    </th>
+    <th></th>
+  </tr>
+</thead>
       <tbody id="tabela"></tbody>
     </table>
   </div>
@@ -129,71 +156,215 @@
 
 <!-- HISTÓRICO -->
 <div id="historico" class="card hidden">
-<button id="btnExportarHistorico" class="btn-main" onclick="abrirModalExportar('historico')" style="margin-bottom:10px;">
-  Exportar Histórico
-</button>
 <div class="filtro-periodo">
   <input type="date" id="dataInicio" placeholder="Data inicial" onchange="atualizarHistorico()">
   <input type="date" id="dataFim" placeholder="Data final" onchange="atualizarHistorico()">
   <button id="btnLimparFiltro" class="btn-limpar-filtro">Limpar</button>
 </div>
+  <div class="input-row">
   <input id="buscaHistorico" placeholder="Buscar" oninput="atualizarHistorico()">
+  <button class="btn-clear" id="btnLimparHistorico" onclick="document.getElementById('buscaHistorico').value=''; atualizarHistorico();">X</button>
+</div>
 
 
 <div class="table-container">
     <table>
       <thead>
-        <tr>
-          <th onclick="ordenarHistorico('data')">Data</th>
-<th onclick="ordenarHistorico('movimentacao')">Movimentação</th>
-<th onclick="ordenarHistorico('tipo')">Tipo</th>
-<th>Produto</th>
-<th onclick="ordenarHistorico('qtd')">Kg</th>
-<th>Ação</th>
-        </tr>
-      </thead>
+  <tr>
+    <th class="sortable none" onclick="ordenarHistorico('data')">
+      Data<span class="sort-arrow"></span>
+    </th>
+    <th class="sortable none" onclick="ordenarHistorico('movimentacao')">
+      Mov.<span class="sort-arrow"></span>
+    </th>
+    <th class="sortable none" onclick="ordenarHistorico('tipo')">
+      Tipo<span class="sort-arrow"></span>
+    </th>
+    <th>Produto</th>
+    <th class="sortable none" onclick="ordenarHistorico('qtd')">
+      Kg<span class="sort-arrow"></span>
+    </th>
+    <th></th>
+  </tr>
+</thead>
       <tbody id="historicoTabela"></tbody>
     </table>
   </div>
 </div>
 
+<!-- DETALHES POR TIPO -->
+<div id="detalhesTipo" class="card hidden">
+
+  <div class="detalhes-header">
+    <button class="btn-voltar" onclick="fecharDetalhes()">← Voltar</button>
+    <h2 id="detalheTitulo">BRF</h2>
+    <div class="detalhes-info">
+  <span id="detalheTotalPeso">0 kg</span>
+  <small id="detalheTotalBobinas">0 bobinas</small>
+</div>
+  </div>
+
+  <div class="input-row">
+  <input id="buscaDetalhes" placeholder="Buscar" oninput="atualizarDetalhes()">
+  <button class="btn-clear" onclick="document.getElementById('buscaDetalhes').value=''; atualizarDetalhes();">X</button>
+</div>
+
+  <div class="table-container">
+    <table>
+<thead>
+  <tr>
+    <th class="sortable none" onclick="ordenarDetalhes('item')">
+      Item<span class="sort-arrow"></span>
+    </th>
+    <th class="sortable none" onclick="ordenarDetalhes('versao')">
+      V.<span class="sort-arrow"></span>
+    </th>
+    <th class="sortable none" onclick="ordenarDetalhes('tamanho')">
+      Medidas<span class="sort-arrow"></span>
+    </th>
+    <th class="sortable none" onclick="ordenarDetalhes('peso')">
+      Kg<span class="sort-arrow"></span>
+    </th>
+    <th class="sortable none" onclick="ordenarDetalhes('qtd')">
+      QTD<span class="sort-arrow"></span>
+    </th>
+    <th></th>
+  </tr>
+</thead>
+      <tbody id="detalhesTabela"></tbody>
+    </table>
+  </div>
+
+</div>
+
 <!-- Depois seu script principal -->
-<script src="script.js"></script>
+<script src="script.js">
+</script>
 
 <!-- ================= MODAL EXPORTAR ================= -->
 <div id="modalExportar" class="modal-overlay hidden">
   <div class="modal-content">
-    <h3>Opções de Exportação</h3>
-    
-    <label>
-      <input type="radio" name="tipoExportacao" value="tudo" checked onchange="togglePeriodo(false)">
-      Exportar Tudo
-    </label>
-    
-    
-    
-    <label>
-      <input type="radio" name="tipoExportacao" value="periodo" onchange="togglePeriodo(true)">
-      Exportar por Período
-    </label>
-    
-    <div id="areaPeriodo" class="hidden">
-      <br>
-      <label>Data Inicial:</label><br>
-      <input type="date" id="exportDataInicio">
-      
-      <label>Data Final:</label><br>
-      <input type="date" id="exportDataFim">
-    </div>
-    
-   
-    <button class="btn-modal btn-confirmar" onclick="executarExportacao()">
+
+    <h3>Exportar Dados</h3>
+
+    <strong>O que deseja exportar?</strong><br><br>
+
+   <label>
+  <input type="radio" id="radioEstoque" name="tipoDados" value="estoque" checked onchange="ajustarOpcaoPeriodo()">
+  Estoque
+</label>
+
+<label>
+  <input type="radio" id="radioHistorico" name="tipoDados" value="historico" onchange="ajustarOpcaoPeriodo()">
+  Histórico
+</label>
+
+<label>
+  <input type="radio" id="radioAmbos" name="tipoDados" value="ambos" onchange="ajustarOpcaoPeriodo()">
+  Ambos
+</label>
+
+<label>
+  <input type="radio" id="radioBackup" name="tipoDados" value="backup" onchange="ajustarOpcaoPeriodo()">
+  Backup (.json)
+</label>
+
+<br><br>
+
+<div id="blocoPeriodo">
+  <strong>Período:</strong><br><br>
+
+  <label>
+    <input type="radio" name="tipoPeriodo" value="tudo" checked onclick="togglePeriodo(false)">
+    Exportar Tudo
+  </label>
+
+  <label>
+    <input type="radio" name="tipoPeriodo" value="periodo" onclick="togglePeriodo(true)">
+    Exportar por Período
+  </label>
+
+  <div id="areaPeriodo" class="hidden">
+    <br>
+    <label>Data Inicial:</label><br>
+    <input type="date" id="exportDataInicio">
+    <br><br>
+    <label>Data Final:</label><br>
+    <input type="date" id="exportDataFim">
+  </div>
+</div>
+
+<br><br>
+
+    <button type="button"
+        class="btn-modal btn-confirmar"
+        onclick="executarExportacao()">
   Confirmar
 </button>
 
-<button class="btn-modal btn-cancelar" onclick="fecharModalExportar()">
-  Cancelar
+<button type="button"
+    class="btn-modal btn-importar"
+    onclick="importarBackup()">
+  📂 Importar Backup
 </button>
+
+<input type="file" id="inputBackup" accept=".json" style="display:none" onchange="processarBackup(event)">
+
+    <button class="btn-modal btn-cancelar" onclick="fecharModalExportar()">
+      Cancelar
+    </button>
+
+  </div>
+</div>
+
+<!-- MODAL OPÇÕES LONG PRESS -->
+<div id="modalOpcoes" class="modal-overlay hidden">
+  <div class="modal-opcoes-content">
+    <h3 id="modalOpcoesTitulo">Opções</h3>
+    <button id="btnOpcaoEditar" class="btn-opcao btn-editar-opcao" onclick="editarBobina()">✏️ Editar peso</button>
+    <button id="btnOpcaoConsumir" class="btn-opcao btn-consumir-opcao" onclick="consumirBobina()">✔️ Marcar como consumida</button>
+    <button id="btnOpcaoExcluir" class="btn-opcao btn-excluir-opcao" onclick="excluirBobina()">🗑️ Excluir</button>
+<button id="btnOpcaoExcluirConsumidas" class="btn-opcao btn-excluir-opcao" onclick="excluirConsumidas()">🗑️ Excluir consumidas</button>
+<button class="btn-opcao btn-cancelar-opcao" onclick="fecharModalOpcoes()">Cancelar</button>
+  </div>
+</div>
+
+<!-- MODAL SAÍDA BOBINAS -->
+<div id="modalSaida" class="modal-overlay hidden">
+  <div class="modal-saida-content">
+    <div class="modal-saida-header">
+      <h3 id="modalSaidaTitulo">Saída</h3>
+      <span id="modalSaidaRestante" class="saida-restante">Restante: 0 kg</span>
+    </div>
+
+    <div class="modal-saida-tabela">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>#</th>
+            <th>Data</th>
+            <th>Kg</th>
+          </tr>
+        </thead>
+        <tbody id="modalSaidaBody"></tbody>
+      </table>
+    </div>
+
+    <div class="modal-saida-botoes">
+      <button class="btn-modal btn-confirmar" onclick="confirmarSaida()">Confirmar</button>
+      <button class="btn-modal btn-cancelar" onclick="cancelarSaida()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL BOBINA ZEROU -->
+<div id="modalZerou" class="modal-overlay hidden">
+  <div class="modal-opcoes-content">
+    <h3>Bobina zerada</h3>
+    <p id="modalZerouTexto">O que fazer com esta bobina?</p>
+    <button class="btn-opcao btn-consumir-opcao" onclick="zerouConsumir()">✔️ Marcar como consumida</button>
+    <button class="btn-opcao btn-excluir-opcao" onclick="zerouExcluir()">🗑️ Excluir</button>
   </div>
 </div>
 
